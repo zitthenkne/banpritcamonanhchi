@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bạn đã sẵn sàng chưa?</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            font-family: 'Montserrat', Arial, sans-serif;
+            background: linear-gradient(120deg, #181c24 0%, #23272f 100%);
+        }
+        body {
+            min-height: 100vh;
+            min-width: 100vw;
+            overflow: hidden;
+            position: relative;
+            color: #fff;
+        }
+        /* Overlay cinematic */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(120deg, #181c24cc 0%, #23272fcc 100%);
+            z-index: 0;
+            pointer-events: none;
+        }
+        .start-container {
+            background: rgba(24, 28, 36, 0.82);
+            border-radius: 2.5rem;
+            box-shadow: 0 8px 40px 0 #10131a, 0 1.5px 8px #23272f;
+            backdrop-filter: blur(12px);
+            z-index: 1;
+        }
+        h1 {
+            color: #fff;
+            text-shadow: 0 2px 16px #b8006b99, 0 1.5px 8px #fff2;
+        }
+    </style>
+</head>
+<body>
+    <div class="start-container" id="start-container">
+        <h1>Bạn đã sẵn sàng chưa?</h1>
+        <button id="start-btn" class="big-impressive-btn">Bắt đầu</button>
+    </div>
+
+    <div class="background-fade" id="bg-fade">
+        <img src="images/background.jpg?v=1.1" alt="Kỷ niệm của chúng ta">
+    </div>
+
+    <!-- Video sẽ được thêm động bằng JS -->
+    <div class="video-container" id="video-container" style="display:none;">
+        <video id="main-video" src="videos/video1.mp4" controls style="width:100vw;height:100vh;object-fit:cover;background:#000;"></video>
+    </div>
+
+    <script src="script.js"></script>
+    <!-- Overlay chuyển trang -->
+    <div id="page-transition-overlay" style="position:fixed;top:0;left:0;width:100vw;height:100vh;background:linear-gradient(120deg,#181c24 0%,#b8006b 100%);z-index:9999;pointer-events:none;opacity:0;transition:opacity 0.7s cubic-bezier(.4,2,.6,1);"></div>
+    <script>
+    // Hiệu ứng overlay khi vào trang
+    window.addEventListener('DOMContentLoaded', function() {
+        const overlay = document.getElementById('page-transition-overlay');
+        overlay.style.opacity = 0;
+        setTimeout(()=>{ overlay.style.transition = 'opacity 0.7s cubic-bezier(.4,2,.6,1)'; overlay.style.opacity = 0; }, 10);
+    });
+    // Hiệu ứng overlay khi rời trang
+    function startPageTransitionAndGo(url) {
+        const overlay = document.getElementById('page-transition-overlay');
+        overlay.style.pointerEvents = 'auto';
+        overlay.style.opacity = 1;
+        setTimeout(()=>{ window.location.href = url; }, 650);
+    }
+    // Ghi đè window.location.href để tự động hiệu ứng
+    (function() {
+        const oldHref = Object.getOwnPropertyDescriptor(window, 'location')?.set;
+        window._goto = function(url) { startPageTransitionAndGo(url); };
+        document.addEventListener('click', function(e) {
+            const t = e.target.closest('a');
+            if (t && t.href && t.target !== '_blank' && !t.hasAttribute('download')) {
+                e.preventDefault();
+                startPageTransitionAndGo(t.href);
+            }
+        });
+    })();
+    </script>
+</body>
+</html>

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tụi em có đôi điều gửi đến anh chị</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            min-height: 100vh;
+            min-width: 100vw;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(120deg, #181c24 0%, #23272f 100%);
+            font-family: 'Montserrat', Arial, sans-serif;
+            color: #fff;
+            position: relative;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(120deg, #181c24cc 0%, #23272fcc 100%);
+            z-index: 0;
+            pointer-events: none;
+        }
+        .message-container {
+            background: rgba(24, 28, 36, 0.82);
+            border-radius: 2.5rem;
+            box-shadow: 0 8px 40px 0 #10131a, 0 1.5px 8px #23272f;
+            padding: 3rem 2.5rem 2.5rem 2.5rem;
+            max-width: 420px;
+            text-align: center;
+            z-index: 1;
+        }
+        .message-title {
+            color: #fff;
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 2.2rem;
+            letter-spacing: 0.03em;
+            text-shadow: 0 2px 16px #b8006b99, 0 1.5px 8px #fff2;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 5.1s cubic-bezier(.4,2,.6,1), transform 5.1s cubic-bezier(.4,2,.6,1);
+        }
+        .listen-btn {
+            background: linear-gradient(100deg, #23272f 60%, #181c24 100%);
+            color: #fff;
+            border: 2.5px solid #b8006b;
+            border-radius: 2em;
+            font-size: 1.25rem;
+            font-weight: 700;
+            padding: 0.8em 2.2em;
+            box-shadow: 0 2px 12px #10131a, 0 1.5px 8px #23272f;
+            cursor: pointer;
+            transition: background 0.18s, color 0.18s, transform 0.18s, box-shadow 0.18s, opacity 5.1s cubic-bezier(.4,2,.6,1), transform 5.1s cubic-bezier(.4,2,.6,1);
+            outline: none;
+            margin-top: 1.5rem;
+            text-shadow: 0 2px 16px #b8006b99, 0 1.5px 8px #fff2;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        .listen-btn:hover, .listen-btn:focus {
+            background: linear-gradient(100deg, #b8006b 60%, #23272f 100%);
+            color: #fff;
+            transform: scale(1.08);
+            box-shadow: 0 0 32px 0 #b8006bcc, 0 4px 24px #10131a;
+        }
+        .listen-btn:active {
+            background: #181c24cc;
+            color: #b8006b;
+            transform: scale(0.97);
+        }
+    </style>
+</head>
+<body>
+    <div class="message-container">
+        <div class="message-title">Tụi em có đôi điều gửi đến anh chị</div>
+        <button class="listen-btn big-impressive-btn" onclick="alert('Chức năng này sẽ được cập nhật sau!')">Lắng nghe</button>
+    </div>
+</body>
+    <!-- Overlay chuyển trang -->
+    <div id="page-transition-overlay" style="position:fixed;top:0;left:0;width:100vw;height:100vh;background:linear-gradient(120deg,#181c24 0%,#b8006b 100%);z-index:9999;pointer-events:none;opacity:0;transition:opacity 0.7s cubic-bezier(.4,2,.6,1);"></div>
+    <script>
+    // Hiệu ứng overlay khi vào trang
+    window.addEventListener('DOMContentLoaded', function() {
+        const overlay = document.getElementById('page-transition-overlay');
+        overlay.style.opacity = 0;
+        setTimeout(()=>{ overlay.style.transition = 'opacity 0.7s cubic-bezier(.4,2,.6,1)'; overlay.style.opacity = 0; }, 10);
+
+        // Fade-in chữ và nút
+        setTimeout(() => {
+            const title = document.querySelector('.message-title');
+            const btn = document.querySelector('.listen-btn');
+            if (title) {
+                title.style.opacity = 1;
+                title.style.transform = 'translateY(0)';
+            }
+            if (btn) {
+                btn.style.opacity = 1;
+                btn.style.transform = 'translateY(0)';
+                // Gán lại sự kiện chuyển trang cho nút Lắng nghe
+                btn.onclick = function() {
+                    startPageTransitionAndGo('emotion.html');
+                };
+            }
+        }, 1200);
+    });
+    // Hiệu ứng overlay khi rời trang
+    function startPageTransitionAndGo(url) {
+        const overlay = document.getElementById('page-transition-overlay');
+        overlay.style.pointerEvents = 'auto';
+        overlay.style.opacity = 1;
+        setTimeout(()=>{ window.location.href = url; }, 650);
+    }
+    // Ghi đè window.location.href để tự động hiệu ứng
+    (function() {
+        window._goto = function(url) { startPageTransitionAndGo(url); };
+        document.addEventListener('click', function(e) {
+            const t = e.target.closest('a');
+            if (t && t.href && t.target !== '_blank' && !t.hasAttribute('download')) {
+                e.preventDefault();
+                startPageTransitionAndGo(t.href);
+            }
+        });
+    })();
+    </script>
+</html>

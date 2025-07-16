@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hình ảnh kỷ niệm</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            font-family: 'Montserrat', Arial, sans-serif;
+            background: linear-gradient(120deg, #181c24 0%, #23272f 100%);
+        }
+        body {
+            min-height: 100vh;
+            min-width: 100vw;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
+        /* Overlay cinematic */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(120deg, #181c24cc 0%, #23272fcc 100%);
+            z-index: 0;
+            pointer-events: none;
+        }
+        .gallery-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 98vw;
+            height: 98vh;
+            box-sizing: border-box;
+            background: rgba(24, 28, 36, 0.82);
+            border-radius: 2.5rem;
+            box-shadow: 0 8px 40px 0 #10131a, 0 1.5px 8px #23272f;
+            backdrop-filter: blur(12px);
+            padding: 2.5rem 1.5rem 2rem 1.5rem;
+            max-width: 700px;
+            z-index: 1;
+        }
+        .gallery-image {
+            max-width: 90vw;
+            max-height: 54vh;
+            border-radius: 1.5rem;
+            box-shadow:
+                0 0 64px 12px #fff2,
+                0 0 128px 32px #b8006b33,
+                0 8px 40px 0 #10131a;
+            background: #23272f;
+            object-fit: contain;
+            margin-bottom: 2.2rem;
+            opacity: 1;
+            transition: opacity 0.5s, transform 0.5s, box-shadow 0.3s;
+            border: 2.5px solid #b8006b;
+            outline: 4px solid #fff2;
+        }
+        .gallery-image.fade-out {
+            opacity: 0;
+            transform: scale(0.97) translateX(-60px);
+            box-shadow: 0 2px 8px #f9c6e0;
+            transition: opacity 0.5s, transform 0.5s, box-shadow 0.3s;
+        }
+        .gallery-image.fade-in {
+            opacity: 1;
+            transform: scale(1.04) translateX(60px);
+            box-shadow: 0 12px 40px #ffb6d5;
+            animation: gallerySlideIn 0.6s cubic-bezier(.4,2,.6,1) both;
+        }
+        .gallery-image.slide-from-right {
+            animation: gallerySlideInRight 0.6s cubic-bezier(.4,2,.6,1) both;
+        }
+        .gallery-image.slide-from-left {
+            animation: gallerySlideInLeft 0.6s cubic-bezier(.4,2,.6,1) both;
+        }
+        @keyframes gallerySlideInRight {
+            0% { opacity: 0; transform: scale(0.97) translateX(80px); filter: blur(2px); }
+            100% { opacity: 1; transform: scale(1.04) translateX(0); filter: blur(0); }
+        }
+        @keyframes gallerySlideInLeft {
+            0% { opacity: 0; transform: scale(0.97) translateX(-80px); filter: blur(2px); }
+            100% { opacity: 1; transform: scale(1.04) translateX(0); filter: blur(0); }
+        }
+        @keyframes gallerySlideIn {
+            0% { opacity: 0; transform: scale(0.97) translateX(0); filter: blur(2px); }
+            100% { opacity: 1; transform: scale(1.04) translateX(0); filter: blur(0); }
+        }
+        .gallery-controls {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 2.2rem;
+            background: rgba(24, 28, 36, 0.85);
+            border-radius: 2em;
+            padding: 1em 2.2em;
+            box-shadow: 0 2px 24px #10131a, 0 1.5px 8px #23272f;
+            border: 1.5px solid #b8006b;
+            margin: 0 auto;
+        }
+        .gallery-btn {
+            background: linear-gradient(135deg, #23272f 60%, #181c24 100%);
+            color: #fff;
+            border: 2.5px solid #b8006b;
+            border-radius: 50%;
+            width: 62px;
+            height: 62px;
+            font-size: 2.1rem;
+            font-weight: 700;
+            box-shadow:
+                0 0 24px 0 #b8006b55,
+                0 2px 12px #10131a;
+            cursor: pointer;
+            transition: background 0.18s, color 0.18s, transform 0.18s, box-shadow 0.18s;
+            outline: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            user-select: none;
+        }
+        .gallery-btn svg {
+            width: 1.7em;
+            height: 1.7em;
+            display: block;
+        }
+        .gallery-btn:hover, .gallery-btn:focus {
+            background: linear-gradient(135deg, #b8006b 60%, #23272f 100%);
+            color: #fff;
+            transform: scale(1.13);
+            box-shadow: 0 0 48px 0 #b8006bcc, 0 4px 24px #10131a;
+        }
+        .gallery-btn:active {
+            background: #181c24cc;
+            color: #b8006b;
+            transform: scale(0.97);
+        }
+        .gallery-text-btn {
+            background: linear-gradient(135deg, #23272f 60%, #181c24 100%);
+            color: #fff;
+            border: 2.5px solid #b8006b;
+            box-shadow: 0 2px 12px #10131a, 0 1.5px 8px #23272f;
+            font-family: 'Montserrat', Arial, sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            border-radius: 2em;
+            padding: 0.7em 1.7em;
+            min-width: 120px;
+            transition: background 0.18s, color 0.18s, transform 0.18s, box-shadow 0.18s;
+        }
+        .gallery-text-btn:hover, .gallery-text-btn:focus {
+            background: linear-gradient(135deg, #b8006b 60%, #23272f 100%);
+            color: #fff;
+            transform: scale(1.08);
+            box-shadow: 0 0 32px 0 #b8006bcc, 0 4px 24px #10131a;
+        }
+        .gallery-text-btn:active {
+            background: #181c24cc;
+            color: #b8006b;
+            transform: scale(0.97);
+        }
+        .gallery-index {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            font-size: 1.35rem;
+            color: #fff;
+            font-weight: 800;
+            opacity: 0.97;
+            margin: 0 0.7em;
+            letter-spacing: 0.04em;
+            background: none;
+            border: none;
+            box-shadow: none;
+            text-shadow: 0 2px 16px #b8006b99, 0 1.5px 8px #fff2;
+        }
+        .gallery-badge, .gallery-total {
+            display: none;
+        }
+        @media (max-width: 600px) {
+            .gallery-container {
+                max-width: 99vw;
+                padding: 1.2rem 0.2rem 1.2rem 0.2rem;
+                border-radius: 1.2rem;
+            }
+            .gallery-image {
+                max-width: 98vw;
+                max-height: 38vh;
+                border-radius: 0.7rem;
+            }
+            .gallery-controls {
+                gap: 1.2rem;
+                padding: 0.7em 1em;
+            }
+            .gallery-btn {
+                width: 44px;
+                height: 44px;
+                font-size: 1.3rem;
+                border-radius: 50%;
+            }
+            .gallery-index {
+                font-size: 1rem;
+            }
+            .gallery-text-btn {
+                font-size: 1rem;
+                min-width: 90px;
+                padding: 0.5em 1em;
+            }
+        }
+        /* Hiệu ứng chuyển động gallery */
+        .gallery-image, video.gallery-image {
+            animation: galleryFadeIn 0.7s cubic-bezier(.4,2,.6,1) both;
+        }
+        @keyframes galleryFadeIn {
+            0% { opacity: 0; transform: scale(0.97); filter: blur(2px); }
+            100% { opacity: 1; transform: scale(1.04); filter: blur(0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="gallery-container">
+        <img id="gallery-img" class="gallery-image" src="" alt="Kỷ niệm">
+        <div class="gallery-controls">
+            <button class="gallery-btn" id="prev-btn" aria-label="Trước">
+                <svg viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="23" stroke="#ffd700" stroke-width="2"/><polyline points="28 36 16 24 28 12" fill="none" stroke="#232323" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <span class="gallery-index" id="gallery-index"></span>
+            <button class="gallery-btn" id="next-btn" aria-label="Sau">
+                <svg viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="23" stroke="#ffd700" stroke-width="2"/><polyline points="20 12 32 24 20 36" fill="none" stroke="#232323" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+        </div>
+        <div class="gallery-bottom-controls" style="display: flex; justify-content: space-between; width: 100%; margin-top: 1.7rem;">
+            <button class="gallery-btn gallery-text-btn" id="back-btn-text" aria-label="Quay lại" style="margin-left: 0.2em; min-width: 120px; font-size: 1.1rem; font-weight: 700; border-radius: 2em;">Quay lại</button>
+            <button class="gallery-btn gallery-text-btn" id="forward-btn-text" aria-label="Tiếp theo" style="margin-right: 0.2em; min-width: 120px; font-size: 1.1rem; font-weight: 700; border-radius: 2em;">Tiếp theo</button>
+        </div>
+    </div>
+    <script>
+        // Danh sách 10 ảnh và 2 video (video dùng link có sẵn trên mạng)
+        const galleryItems = [
+            { type: 'image', src: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80' },
+            { type: 'image', src: 'https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=800&q=80' },
+            { type: 'image', src: 'https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=800&q=80' },
+            { type: 'image', src: 'https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=800&q=80' },
+            { type: 'image', src: 'https://images.unsplash.com/photo-1465101178521-c1a9136a3b99?auto=format&fit=crop&w=800&q=80' },
+            { type: 'image', src: 'https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=800&q=80' },
+            { type: 'image', src: 'https://images.unsplash.com/photo-1519985176271-adb1088fa94c?auto=format&fit=crop&w=800&q=80' },
+            { type: 'image', src: 'https://images.unsplash.com/photo-1502082553048-f009c37129b9?auto=format&fit=crop&w=800&q=80' },
+            { type: 'image', src: 'https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=800&q=80' },
+            { type: 'image', src: 'https://images.unsplash.com/photo-1465101178521-c1a9136a3b99?auto=format&fit=crop&w=800&q=80' },
+            { type: 'video', src: 'https://www.w3schools.com/html/mov_bbb.mp4' },
+            { type: 'video', src: 'https://www.w3schools.com/html/movie.mp4' }
+        ];
+        let idx = 0;
+        const img = document.getElementById('gallery-img');
+        const indexSpan = document.getElementById('gallery-index');
+        let videoEl = null;
+        let autoTimer = null;
+
+        function clearAutoTimer() {
+            if (autoTimer) {
+                clearTimeout(autoTimer);
+                autoTimer = null;
+            }
+        }
+
+        function showItem(newIdx, isAuto = false) {
+            let direction = (newIdx > idx || (newIdx === 0 && idx === galleryItems.length - 1)) ? 'right' : 'left';
+            // Nếu đã ở mục cuối cùng và chuyển tiếp, thực hiện hiệu ứng biến mất toàn bộ trang
+            if (idx === galleryItems.length - 1 && (newIdx >= galleryItems.length || newIdx === 0)) {
+                // Tạo overlay che toàn bộ trang để làm hiệu ứng fade-out
+                let fadeOverlay = document.createElement('div');
+                fadeOverlay.style.position = 'fixed';
+                fadeOverlay.style.top = '0';
+                fadeOverlay.style.left = '0';
+                fadeOverlay.style.width = '100vw';
+                fadeOverlay.style.height = '100vh';
+                fadeOverlay.style.background = 'linear-gradient(120deg, #181c24cc 0%, #23272fcc 100%)';
+                fadeOverlay.style.zIndex = '9999';
+                fadeOverlay.style.opacity = '0';
+                fadeOverlay.style.transition = 'opacity 1.2s cubic-bezier(.4,2,.6,1)';
+                document.body.appendChild(fadeOverlay);
+                // Bắt đầu hiệu ứng mờ dần
+                setTimeout(() => {
+                    fadeOverlay.style.opacity = '1';
+                }, 10);
+                clearAutoTimer();
+                setTimeout(() => {
+                    window.location.href = 'message.html';
+                }, 1250);
+                return;
+            }
+            if (newIdx < 0) newIdx = galleryItems.length - 1;
+            if (newIdx >= galleryItems.length) newIdx = 0;
+            if (newIdx === idx && isAuto) return; // Đừng lặp lại nếu tự động
+            if (galleryItems[idx].type === 'video' && videoEl) {
+                videoEl.pause();
+            }
+            img.classList.remove('fade-in', 'slide-from-right', 'slide-from-left');
+            img.classList.add('fade-out');
+            if (videoEl) {
+                videoEl.classList.remove('fade-in', 'slide-from-right', 'slide-from-left');
+                videoEl.classList.add('fade-out');
+            }
+            clearAutoTimer();
+            setTimeout(() => {
+                idx = newIdx;
+                updateGallery(direction);
+                img.classList.remove('fade-out');
+                img.classList.add('fade-in', direction === 'right' ? 'slide-from-right' : 'slide-from-left');
+                if (videoEl) {
+                    videoEl.classList.remove('fade-out');
+                    videoEl.classList.add('fade-in', direction === 'right' ? 'slide-from-right' : 'slide-from-left');
+                }
+            }, 220);
+        }
+
+        function updateGallery(direction) {
+            const item = galleryItems[idx];
+            indexSpan.textContent = `${idx + 1} / ${galleryItems.length}`;
+            clearAutoTimer();
+            if (item.type === 'image') {
+                img.style.display = '';
+                img.src = item.src;
+                img.classList.remove('slide-from-right', 'slide-from-left', 'fade-in', 'fade-out');
+                void img.offsetWidth; // force reflow for animation
+                if (direction) img.classList.add('fade-in', direction === 'right' ? 'slide-from-right' : 'slide-from-left');
+                if (videoEl) videoEl.style.display = 'none';
+                // Tự động chuyển ảnh sau 1 giây
+                autoTimer = setTimeout(() => showItem(idx + 1, true), 1500);
+            } else if (item.type === 'video') {
+                img.style.display = 'none';
+                if (!videoEl) {
+                    videoEl = document.createElement('video');
+                    videoEl.setAttribute('controls', '');
+                    videoEl.setAttribute('playsinline', '');
+                    videoEl.className = 'gallery-image';
+                    img.parentNode.insertBefore(videoEl, img.nextSibling);
+                }
+                videoEl.src = item.src;
+                videoEl.style.display = '';
+                videoEl.classList.remove('slide-from-right', 'slide-from-left', 'fade-in', 'fade-out');
+                void videoEl.offsetWidth;
+                if (direction) videoEl.classList.add('fade-in', direction === 'right' ? 'slide-from-right' : 'slide-from-left');
+                videoEl.currentTime = 0;
+                videoEl.play();
+                // Khi video kết thúc thì chuyển sang media tiếp theo
+                videoEl.onended = () => {
+                    showItem(idx + 1, true);
+                };
+            }
+        }
+
+        document.getElementById('prev-btn').onclick = () => showItem(idx - 1);
+        document.getElementById('next-btn').onclick = () => showItem(idx + 1);
+        // Gán lại sự kiện cho nút chữ bên dưới
+        const backBtnText = document.getElementById('back-btn-text');
+        if (backBtnText) backBtnText.onclick = () => {
+            window.location.href = 'video.html';
+        };
+        const forwardBtnText = document.getElementById('forward-btn-text');
+        if (forwardBtnText) forwardBtnText.onclick = () => {
+            window.location.href = 'message.html';
+        };
+
+        // Swipe support for mobile
+        let touchStartX = null;
+        function getActiveMedia() {
+            return galleryItems[idx].type === 'image' ? img : videoEl;
+        }
+        img.addEventListener('touchstart', e => {
+            touchStartX = e.touches[0].clientX;
+        });
+        img.addEventListener('touchend', e => {
+            if (touchStartX === null) return;
+            const dx = e.changedTouches[0].clientX - touchStartX;
+            if (Math.abs(dx) > 40) {
+                if (dx > 0) showItem(idx - 1);
+                else showItem(idx + 1);
+            }
+            touchStartX = null;
+        });
+        // Thêm swipe cho video
+        function addVideoSwipe() {
+            if (!videoEl) return;
+            videoEl.ontouchstart = e => {
+                touchStartX = e.touches[0].clientX;
+            };
+            videoEl.ontouchend = e => {
+                if (touchStartX === null) return;
+                const dx = e.changedTouches[0].clientX - touchStartX;
+                if (Math.abs(dx) > 40) {
+                    if (dx > 0) showItem(idx - 1);
+                    else showItem(idx + 1);
+                }
+                touchStartX = null;
+            };
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', e => {
+            if (e.key === 'ArrowLeft') showItem(idx - 1);
+            if (e.key === 'ArrowRight') showItem(idx + 1);
+        });
+
+        // Khởi tạo
+        updateGallery('right');
+        // Đảm bảo swipe cho video nếu có
+        const observer = new MutationObserver(() => addVideoSwipe());
+        observer.observe(document.body, { childList: true, subtree: true });
+    </script>
+</body>
+</html>

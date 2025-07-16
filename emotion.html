@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lắng nghe cảm xúc</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            min-height: 100vh;
+            min-width: 100vw;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(120deg, #181c24 0%, #23272f 100%);
+            font-family: 'Montserrat', Arial, sans-serif;
+            color: #fff;
+            position: relative;
+            overflow: hidden;
+        }
+        .video-fade {
+            opacity: 0;
+            transform: scale(0.97);
+            transition: opacity 2.2s cubic-bezier(.4,2,.6,1), transform 2.2s cubic-bezier(.4,2,.6,1);
+        }
+        .video-fade.in {
+            opacity: 1;
+            transform: scale(1.04);
+        }
+        .video-container {
+            background: rgba(24, 28, 36, 0.82);
+            border-radius: 2.5rem;
+            box-shadow: 0 8px 40px 0 #10131a, 0 1.5px 8px #23272f;
+            padding: 2.5rem 2.5rem 2.5rem 2.5rem;
+            max-width: 700px;
+            width: 96vw;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .emotion-title {
+            color: #fff;
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 2.2rem;
+            letter-spacing: 0.03em;
+            text-shadow: 0 2px 16px #b8006b99, 0 1.5px 8px #fff2;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 2.2s cubic-bezier(.4,2,.6,1), transform 2.2s cubic-bezier(.4,2,.6,1);
+        }
+        .emotion-title.in {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        video {
+            width: 100%;
+            max-width: 540px;
+            border-radius: 1.5rem;
+            box-shadow: 0 0 64px 12px #fff2, 0 0 128px 32px #b8006b33, 0 8px 40px 0 #10131a;
+            background: #23272f;
+            margin-bottom: 2.2rem;
+            outline: 4px solid #fff2;
+        }
+        .emotion-controls {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 2.2rem;
+            background: rgba(24, 28, 36, 0.85);
+            border-radius: 2em;
+            padding: 1em 2.2em;
+            box-shadow: 0 2px 24px #10131a, 0 1.5px 8px #23272f;
+            border: 1.5px solid #b8006b;
+            margin: 0 auto 2.2rem auto;
+        }
+        .emotion-btn {
+            background: linear-gradient(135deg, #23272f 60%, #181c24 100%);
+            color: #fff;
+            border: 2.5px solid #b8006b;
+            border-radius: 50%;
+            width: 62px;
+            height: 62px;
+            font-size: 2.1rem;
+            font-weight: 700;
+            box-shadow: 0 0 24px 0 #b8006b55, 0 2px 12px #10131a;
+            cursor: pointer;
+            transition: background 0.18s, color 0.18s, transform 0.18s, box-shadow 0.18s;
+            outline: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            user-select: none;
+        }
+        .emotion-btn svg {
+            width: 1.7em;
+            height: 1.7em;
+            display: block;
+        }
+        .emotion-btn:hover, .emotion-btn:focus {
+            background: linear-gradient(135deg, #b8006b 60%, #23272f 100%);
+            color: #fff;
+            transform: scale(1.13);
+            box-shadow: 0 0 48px 0 #b8006bcc, 0 4px 24px #10131a;
+        }
+        .emotion-btn:active {
+            background: #181c24cc;
+            color: #b8006b;
+            transform: scale(0.97);
+        }
+        .emotion-bottom-controls {
+            display: flex;
+            justify-content: center;
+            gap: 2.2rem;
+            width: 100%;
+            margin-top: 0.5rem;
+        }
+        .emotion-text-btn {
+            background: linear-gradient(100deg, #23272f 60%, #181c24 100%);
+            color: #fff;
+            border: 2.5px solid #b8006b;
+            border-radius: 2em;
+            font-size: 1.25rem;
+            font-weight: 700;
+            padding: 0.8em 2.2em;
+            box-shadow: 0 2px 12px #10131a, 0 1.5px 8px #23272f;
+            cursor: pointer;
+            transition: background 0.18s, color 0.18s, transform 0.18s, box-shadow 0.18s, opacity 5.1s cubic-bezier(.4,2,.6,1), transform 5.1s cubic-bezier(.4,2,.6,1);
+            outline: none;
+            margin-top: 1.5rem;
+            text-shadow: 0 2px 16px #b8006b99, 0 1.5px 8px #fff2;
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .emotion-text-btn:hover, .emotion-text-btn:focus {
+            background: linear-gradient(100deg, #b8006b 60%, #23272f 100%);
+            color: #fff;
+            transform: scale(1.08);
+            box-shadow: 0 0 32px 0 #b8006bcc, 0 4px 24px #10131a;
+        }
+        .emotion-text-btn:active {
+            background: #181c24cc;
+            color: #b8006b;
+            transform: scale(0.97);
+        }
+        @media (max-width: 600px) {
+            .emotion-controls {
+                gap: 1.2rem;
+                padding: 0.7em 1em;
+            }
+            .emotion-btn {
+                width: 44px;
+                height: 44px;
+                font-size: 1.3rem;
+                border-radius: 50%;
+            }
+            .emotion-text-btn {
+                min-width: 120px;
+                font-size: 0.98rem;
+                padding: 0.7em 1.2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="video-container">
+        <div class="emotion-title">Lắng nghe cảm xúc</div>
+        <video id="emotion-video" class="video-fade" src="" controls playsinline></video>
+        <div class="emotion-controls">
+            <button class="emotion-btn" id="prev-btn" aria-label="Video trước">
+                <svg viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="23" stroke="#ffd700" stroke-width="2"/><polyline points="28 36 16 24 28 12" fill="none" stroke="#232323" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <span id="emotion-owner" style="min-width: 90px; text-align: center; font-size: 1.25rem; font-weight: 600; color: #ffd700; letter-spacing: 0.02em; text-shadow: 0 2px 16px #b8006b99, 0 1.5px 8px #fff2;">Bạn A</span>
+            <button class="emotion-btn" id="next-btn" aria-label="Video tiếp theo">
+                <svg viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="23" stroke="#ffd700" stroke-width="2"/><polyline points="20 12 32 24 20 36" fill="none" stroke="#232323" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+        </div>
+        <div class="emotion-bottom-controls" style="display: flex; justify-content: center; gap: 2.2rem; width: 100%; margin-top: 0.5rem;">
+            <button class="emotion-btn emotion-text-btn" id="review-btn" style="min-width: 140px; font-size: 1.1rem; font-weight: 700; border-radius: 2em;">Xem lại kỉ niệm</button>
+            <button class="emotion-btn emotion-text-btn" id="done-btn" style="min-width: 140px; font-size: 1.1rem; font-weight: 700; border-radius: 2em;">Đã nghe hết</button>
+        </div>
+    </div>
+    <script>
+    // Danh sách video mẫu (có thể thay đổi link tuỳ ý)
+    const videos = [
+        'https://www.w3schools.com/html/mov_bbb.mp4',
+        'https://www.w3schools.com/html/movie.mp4',
+        'https://samplelib.com/mp4/sample-5s.mp4',
+        'https://samplelib.com/mp4/sample-10s.mp4',
+        'https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4',
+        'https://filesamples.com/samples/video/mp4/sample_640x360.mp4'
+    ];
+    let idx = 0;
+    const video = document.getElementById('emotion-video');
+    const title = document.querySelector('.emotion-title');
+    const prevBtn = document.getElementById('prev-btn');
+    const nextBtn = document.getElementById('next-btn');
+    const ownerSpan = document.getElementById('emotion-owner');
+
+    // Danh sách tên chủ nhân video (ví dụ)
+    const owners = ['Bạn A', 'Bạn B', 'Bạn A', 'Bạn B', 'Bạn A', 'Bạn B'];
+
+    function showVideo(i) {
+        video.classList.remove('in');
+        title.classList.remove('in');
+        setTimeout(() => {
+            idx = (i + videos.length) % videos.length;
+            video.src = videos[idx];
+            video.currentTime = 0;
+            video.load();
+            video.classList.add('in');
+            title.classList.add('in');
+            video.play();
+            // Cập nhật tên chủ nhân
+            if (ownerSpan) ownerSpan.textContent = owners[idx] || '';
+        }, 600);
+    }
+
+    // Khi video kết thúc, chuyển sang video tiếp theo (vòng lặp)
+    video.onended = () => {
+        showVideo((idx + 1) % videos.length);
+    };
+
+    // Nút tiến tới video tiếp theo
+    nextBtn.addEventListener('click', function() {
+        showVideo((idx + 1) % videos.length);
+    });
+
+    // Nút lùi lại video trước
+    prevBtn.addEventListener('click', function() {
+        showVideo((idx - 1 + videos.length) % videos.length);
+    });
+
+    // Hiệu ứng vào trang
+    window.addEventListener('DOMContentLoaded', function() {
+        setTimeout(() => {
+            title.classList.add('in');
+            video.src = videos[0];
+            video.classList.add('in');
+            video.load();
+            video.play();
+            if (ownerSpan) ownerSpan.textContent = owners[0] || '';
+        }, 600);
+    });
+    // Hỗ trợ vuốt trên điện thoại
+    let touchStartX = null;
+    video.addEventListener('touchstart', function(e) {
+        if (e.touches.length === 1) {
+            touchStartX = e.touches[0].clientX;
+        }
+    });
+    video.addEventListener('touchend', function(e) {
+        if (touchStartX === null) return;
+        const dx = e.changedTouches[0].clientX - touchStartX;
+        if (Math.abs(dx) > 40) {
+            if (dx > 0) {
+                showVideo(idx - 1);
+            } else {
+                showVideo(idx + 1);
+            }
+        }
+        touchStartX = null;
+    });
+
+    // Hỗ trợ phím mũi tên trên máy tính
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'ArrowLeft') {
+            showVideo(idx - 1);
+        } else if (e.key === 'ArrowRight') {
+            showVideo(idx + 1);
+        }
+    });
+
+    document.getElementById('review-btn').onclick = function() {
+        window.location.href = 'gallery.html';
+    };
+    document.getElementById('done-btn').onclick = function() {
+        window.location.href = 'thankyou.html';
+    };
+    </script>
+</body>
+</html>

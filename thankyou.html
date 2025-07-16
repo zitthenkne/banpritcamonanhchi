@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cảm ơn anh chị</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            min-height: 100vh;
+            min-width: 100vw;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(120deg, #181c24 0%, #23272f 100%);
+            font-family: 'Montserrat', Arial, sans-serif;
+            color: #fff;
+            position: relative;
+            overflow: hidden;
+        }
+        .thankyou-container {
+            background: rgba(24, 28, 36, 0.82);
+            border-radius: 2.5rem;
+            box-shadow: 0 8px 40px 0 #10131a, 0 1.5px 8px #23272f;
+            padding: 2.5rem 2.5rem 2.5rem 2.5rem;
+            max-width: 700px;
+            width: 96vw;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .gallery-img {
+            max-width: 90vw;
+            max-height: 54vh;
+            border-radius: 1.5rem;
+            box-shadow: 0 0 64px 12px #fff2, 0 0 128px 32px #b8006b33, 0 8px 40px 0 #10131a;
+            background: #23272f;
+            object-fit: contain;
+            margin-bottom: 2.2rem;
+            opacity: 0;
+            transition: opacity 0.5s;
+        }
+        .gallery-img.visible {
+            opacity: 1;
+        }
+        .thankyou-message {
+            font-size: 2.1rem;
+            font-family: 'Dancing Script', 'Montserrat', Arial, sans-serif;
+            font-weight: 700;
+            background: linear-gradient(90deg, #ffd700 30%, #ff6f91 70%, #b8006b 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-fill-color: transparent;
+            text-align: center;
+            margin-top: 2.5rem;
+            opacity: 1;
+            min-height: 3.5em;
+            letter-spacing: 0.01em;
+            text-shadow: 0 2px 16px #b8006b44, 0 1px 0 #fff8;
+            position: relative;
+            transition: none;
+            display: inline-block;
+        }
+        .thankyou-message .type-cursor {
+            display: inline-block;
+            width: 1ch;
+            color: #ffd700;
+            background: none;
+            animation: blink 0.8s steps(1) infinite;
+            font-family: inherit;
+            font-size: inherit;
+        }
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+        .thankyou-container {
+            animation: floatUp 1.2s cubic-bezier(.22,1,.36,1) 0.2s both;
+        }
+        @keyframes floatUp {
+            0% { transform: translateY(60px) scale(0.98); opacity: 0; }
+            100% { transform: translateY(0) scale(1); opacity: 1; }
+        }
+        @media (max-width: 600px) {
+            .thankyou-container {
+                max-width: 99vw;
+                padding: 1.2rem 0.2rem 1.2rem 0.2rem;
+                border-radius: 1.2rem;
+            }
+            .gallery-img {
+                max-width: 98vw;
+                max-height: 38vh;
+                border-radius: 0.7rem;
+            }
+        }
+        .pink-btn {
+            background: linear-gradient(100deg, #23272f 60%, #181c24 100%);
+            color: #fff;
+            border: 2.5px solid #b8006b;
+            border-radius: 2em;
+            font-size: 1.25rem;
+            font-weight: 700;
+            padding: 0.8em 2.2em;
+            box-shadow: 0 2px 12px #10131a, 0 1.5px 8px #23272f;
+            cursor: pointer;
+            transition: background 0.18s, color 0.18s, transform 0.18s, box-shadow 0.18s, opacity 5.1s cubic-bezier(.4,2,.6,1), transform 5.1s cubic-bezier(.4,2,.6,1);
+            outline: none;
+            margin-top: 1.5rem;
+            text-shadow: 0 2px 16px #b8006b99, 0 1.5px 8px #fff2;
+            opacity: 1;
+            transform: translateY(0);
+            text-decoration: none !important;
+        }
+        .pink-btn:hover, .pink-btn:focus {
+            background: linear-gradient(100deg, #b8006b 60%, #23272f 100%);
+            color: #fff;
+            transform: scale(1.08);
+            box-shadow: 0 0 32px 0 #b8006bcc, 0 4px 24px #10131a;
+        }
+        .pink-btn:active {
+            background: #181c24cc;
+            color: #b8006b;
+            transform: scale(0.97);
+        }
+    </style>
+</head>
+<body>
+    <div class="thankyou-container">
+        <div id="gallery-area"></div>
+        <div class="thankyou-message" id="thankyou-message">
+            Cảm ơn anh chị đã đồng hành với ban PRIT, chúng em luôn sẵn lòng chào đón anh chị quay về với ban
+        </div>
+        <a id="restart-btn" href="index.html" style="display:none;margin-top:2.2rem;">
+            <span class="big-impressive-btn pink-btn">Bắt đầu lại</span>
+        </a>
+    </div>
+    <script>
+    // Danh sách ảnh giống gallery.html
+    const galleryImages = [
+        'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80',
+        'https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=800&q=80',
+        'https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=800&q=80',
+        'https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=800&q=80',
+        'https://images.unsplash.com/photo-1465101178521-c1a9136a3b99?auto=format&fit=crop&w=800&q=80',
+        'https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=800&q=80',
+        'https://images.unsplash.com/photo-1519985176271-adb1088fa94c?auto=format&fit=crop&w=800&q=80',
+        'https://images.unsplash.com/photo-1502082553048-f009c37129b9?auto=format&fit=crop&w=800&q=80',
+        'https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=800&q=80',
+        'https://images.unsplash.com/photo-1465101178521-c1a9136a3b99?auto=format&fit=crop&w=800&q=80'
+    ];
+    const galleryArea = document.getElementById('gallery-area');
+    const thankyouMsg = document.getElementById('thankyou-message');
+    let idx = 0;
+
+    function showNextImg() {
+        if (idx < galleryImages.length) {
+            const img = document.createElement('img');
+            img.src = galleryImages[idx];
+            img.className = 'gallery-img';
+            galleryArea.appendChild(img);
+            setTimeout(() => img.classList.add('visible'), 50);
+            setTimeout(() => {
+                img.classList.remove('visible');
+                setTimeout(() => {
+                    img.remove();
+                    idx++;
+                    showNextImg();
+                }, 500);
+            }, 500);
+        } else {
+            setTimeout(() => {
+                typeThankyou();
+            }, 500);
+        }
+    }
+
+    // Hiệu ứng gõ máy với con trỏ nhấp nháy
+    function typeThankyou() {
+        const text = 'Cảm ơn anh chị đã đồng hành với ban PRIT, chúng em luôn sẵn lòng chào đón anh chị quay về với ban';
+        let i = 0;
+        thankyouMsg.innerHTML = '<span></span><span class="type-cursor">|</span>';
+        const textSpan = thankyouMsg.querySelector('span');
+        const cursor = thankyouMsg.querySelector('.type-cursor');
+        const restartBtn = document.getElementById('restart-btn');
+        restartBtn.style.display = 'none';
+        function typeChar() {
+            if (i <= text.length) {
+                textSpan.textContent = text.slice(0, i);
+                i++;
+                setTimeout(typeChar, 32);
+            } else {
+                cursor.style.display = 'none';
+                restartBtn.style.display = 'block';
+            }
+        }
+        typeChar();
+    }
+
+    window.onload = function() {
+        thankyouMsg.innerHTML = '';
+        document.getElementById('restart-btn').style.display = 'none';
+        idx = 0;
+        showNextImg();
+    };
+
+    document.getElementById('restart-btn').onclick = function() {
+        // Xóa ảnh còn lại nếu có
+        galleryArea.innerHTML = '';
+        thankyouMsg.innerHTML = '';
+        this.style.display = 'none';
+        idx = 0;
+        showNextImg();
+    };
+    </script>
+</body>
+</html>
