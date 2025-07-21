@@ -58,6 +58,31 @@
     </div>
 
     <script src="script.js"></script>
+    <script>
+    // Nếu có nhiều video, phát lần lượt, hết video cuối thì chuyển gallery.html
+    (function() {
+        // Danh sách video, có thể mở rộng nếu cần
+        var videoUrls = [
+            'videos/video1.mp4'
+            // Thêm các video khác nếu muốn phát lần lượt
+        ];
+        var currentVideo = 0;
+        var video = document.getElementById('main-video');
+        if (video) {
+            video.onended = function() {
+                currentVideo++;
+                if (currentVideo < videoUrls.length) {
+                    video.src = videoUrls[currentVideo];
+                    video.currentTime = 0;
+                    video.play();
+                } else {
+                    // Hết video cuối cùng, chuyển sang gallery.html
+                    startPageTransitionAndGo('gallery.html');
+                }
+            };
+        }
+    })();
+    </script>
     <!-- Overlay chuyển trang -->
     <div id="page-transition-overlay" style="position:fixed;top:0;left:0;width:100vw;height:100vh;background:linear-gradient(120deg,#181c24 0%,#b8006b 100%);z-index:9999;pointer-events:none;opacity:0;transition:opacity 0.7s cubic-bezier(.4,2,.6,1);"></div>
     <script>

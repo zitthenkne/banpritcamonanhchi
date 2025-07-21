@@ -64,6 +64,7 @@
             position: relative;
             transition: none;
             display: inline-block;
+            white-space: pre-line;
         }
         .thankyou-message .type-cursor {
             display: inline-block;
@@ -132,7 +133,10 @@
     <div class="thankyou-container">
         <div id="gallery-area"></div>
         <div class="thankyou-message" id="thankyou-message">
-            Cảm ơn anh chị đã đồng hành với ban PRIT, chúng em luôn sẵn lòng chào đón anh chị quay về với ban
+            WE ARE STILL A BIG FAMILY
+
+Cảm ơn anh chị vì một hành trình dài đầy ý nghĩa của tuổi xuân cùng CLB Tình Nguyện Khoa Y 
+Nhà Đỏ nói chung và ban Truyền Thông - IT nói riêng hẹn gặp lại anh chị trên con đường phía trước ❤️
         </div>
         <a id="restart-btn" href="index.html" style="display:none;margin-top:2.2rem;">
             <span class="big-impressive-btn pink-btn">Bắt đầu lại</span>
@@ -180,7 +184,7 @@
 
     // Hiệu ứng gõ máy với con trỏ nhấp nháy
     function typeThankyou() {
-        const text = 'Cảm ơn anh chị đã đồng hành với ban PRIT, chúng em luôn sẵn lòng chào đón anh chị quay về với ban';
+        const text = 'WE ARE STILL A BIG FAMILY\n\nCảm ơn anh chị vì một hành trình dài đầy ý nghĩa của tuổi xuân cùng CLB Tình Nguyện Khoa Y\nNhà Đỏ nói chung và ban Truyền Thông - IT nói riêng hẹn gặp lại anh chị trên con đường phía trước ❤️';
         let i = 0;
         thankyouMsg.innerHTML = '<span></span><span class="type-cursor">|</span>';
         const textSpan = thankyouMsg.querySelector('span');

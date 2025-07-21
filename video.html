@@ -128,12 +128,12 @@
 </head>
 <body>
     <div class="video-fullscreen">
-        <div class="video-glow">
-            <video id="main-video" controls autoplay></video>
+        <button id="go-btn" class="video-btn" style="position:absolute;z-index:10;left:50%;top:50%;transform:translate(-50%,-50%);font-size:2rem;padding:1em 2.5em;">Go</button>
+        <div class="video-glow" id="video-glow" style="display:none;">
+            <video id="main-video" controls></video>
         </div>
-        <div class="video-controls">
-        
-            <button class="video-btn" id="skip-btn">Bỏ qua</button>
+        <div class="video-controls" id="video-controls" style="display:none;">
+            <button class="video-btn" id="skip-btn">Tiếp theo</button>
             <button class="video-btn" id="replay-btn">Xem lại</button>
         </div>
     </div>
@@ -166,7 +166,7 @@
         });
     })();
 
-    // Phát lần lượt nhiều video ngắn
+    // Phát lần lượt nhiều video ngắn, chỉ bắt đầu khi nhấn Go
     var videoUrls = [
         'https://www.w3schools.com/html/mov_bbb.mp4', // 5s đầu
         'https://www.w3schools.com/html/movie.mp4',   // 3s tiếp
@@ -175,6 +175,9 @@
     ];
     var currentVideo = 0;
     var video = document.getElementById('main-video');
+    var goBtn = document.getElementById('go-btn');
+    var videoGlow = document.getElementById('video-glow');
+    var videoControls = document.getElementById('video-controls');
 
     function playCurrentVideo() {
         video.src = videoUrls[currentVideo];
@@ -182,7 +185,12 @@
         video.play();
     }
 
-    playCurrentVideo();
+    goBtn.addEventListener('click', function() {
+        goBtn.style.display = 'none';
+        videoGlow.style.display = '';
+        videoControls.style.display = '';
+        playCurrentVideo();
+    });
 
     document.getElementById('skip-btn').onclick = function() {
         startPageTransitionAndGo('gallery.html');
