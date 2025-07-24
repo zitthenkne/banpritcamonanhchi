@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kỷ niệm của chúng ta</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            font-family: 'Montserrat', Arial, sans-serif;
+            background: linear-gradient(120deg, #181c24 0%, #23272f 100%);
+        }
+        body {
+            min-height: 100vh;
+            min-width: 100vw;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
+        /* Overlay cinematic */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(120deg, #181c24cc 0%, #23272fcc 100%);
+            z-index: 0;
+            pointer-events: none;
+        }
+        .video-fullscreen {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: transparent;
+            position: relative;
+            z-index: 1;
+        }
+        .video-glow {
+            background: rgba(24, 28, 36, 0.82);
+            border-radius: 2.5rem;
+            border: 2.5px solid #b8006b;
+            padding: 1.5rem 2.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 40px 0 #10131a, 0 1.5px 8px #23272f;
+            backdrop-filter: blur(12px);
+            max-width: 700px;
+        }
+        video {
+            width: 100%;
+            height: 100%;
+            max-width: 800px;
+            max-height: 450px;
+            object-fit: contain;
+            background: #23272f;
+            display: block;
+            margin: 0 auto;
+            border-radius: 1.5rem;
+            border: 2.5px solid #b8006b;
+            box-shadow:
+                0 0 64px 12px #fff2,
+                0 0 128px 32px #b8006b33,
+                0 8px 40px 0 #10131a;
+            display: block;
+            transition: box-shadow 0.3s;
+        }
+        .video-controls {
+            position: absolute;
+            bottom: 5vh;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 2.2rem;
+            z-index: 2;
+        }
+        .video-btn {
+            background: linear-gradient(135deg, #23272f 60%, #181c24 100%);
+            color: #fff;
+            border: 2.5px solid #b8006b;
+            border-radius: 2em;
+            padding: 0.7em 2em;
+            font-size: 1.1rem;
+            font-weight: 700;
+            box-shadow: 0 2px 12px #10131a, 0 1.5px 8px #23272f;
+            cursor: pointer;
+            transition: background 0.18s, color 0.18s, transform 0.18s, box-shadow 0.18s;
+        }
+        .video-btn:hover, .video-btn:focus {
+            background: linear-gradient(135deg, #b8006b 60%, #23272f 100%);
+            color: #fff;
+            transform: scale(1.08);
+            box-shadow: 0 0 32px 0 #b8006bcc, 0 4px 24px #10131a;
+        }
+        .video-btn:active {
+            background: #181c24cc;
+            color: #b8006b;
+            transform: scale(0.97);
+        }
+        /* Responsive cho mobile */
+        @media (max-width: 900px) {
+            .video-glow {
+                max-width: 99vw;
+                padding: 1.2rem 0.2rem 1.2rem 0.2rem;
+                border-radius: 1.2rem;
+            }
+            video {
+                width: 98vw;
+                height: 38vh;
+                min-height: 180px;
+                max-width: 98vw;
+                max-height: 38vh;
+                border-radius: 0.7rem;
+            }
+            .video-controls {
+                gap: 1.2rem;
+                padding: 0.7em 1em;
+            }
+            .video-btn {
+                font-size: 1rem;
+                min-width: 90px;
+                padding: 0.5em 1em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="video-fullscreen">
+        <button id="go-btn" class="video-btn" style="position:absolute;z-index:10;left:50%;top:50%;transform:translate(-50%,-50%);font-size:2rem;padding:1em 2.5em;">Go</button>
+        <div class="video-glow" id="video-glow" style="display:none;">
+            <video id="main-video" controls></video>
+        </div>
+        <div class="video-controls" id="video-controls" style="display:none;">
+            <button class="video-btn" id="skip-btn">Tiếp theo</button>
+            <button class="video-btn" id="replay-btn">Xem lại</button>
+        </div>
+    </div>
+    <script>
+    </script>
+    <div id="page-transition-overlay" style="position:fixed;top:0;left:0;width:100vw;height:100vh;background:linear-gradient(120deg,#181c24cc 0%,#b8006bcc 100%);z-index:9999;pointer-events:none;opacity:0;transition:opacity 0.7s cubic-bezier(.4,2,.6,1);"></div>
+    <script>
+    // Hiệu ứng overlay khi vào trang
+    window.addEventListener('DOMContentLoaded', function() {
+        var overlay = document.getElementById('page-transition-overlay');
+        overlay.style.opacity = 0;
+        setTimeout(function(){ overlay.style.transition = 'opacity 0.7s cubic-bezier(.4,2,.6,1)'; overlay.style.opacity = 0; }, 10);
+    });
+    // Hiệu ứng overlay khi rời trang
+    function startPageTransitionAndGo(url) {
+        var overlay = document.getElementById('page-transition-overlay');
+        overlay.style.pointerEvents = 'auto';
+        overlay.style.opacity = 1;
+        setTimeout(function(){ window.location.href = url; }, 650);
+    }
+    // Ghi đè window.location.href để tự động hiệu ứng
+    (function() {
+        window._goto = function(url) { startPageTransitionAndGo(url); };
+        document.addEventListener('click', function(e) {
+            var t = e.target.closest('a');
+            if (t && t.href && t.target !== '_blank' && !t.hasAttribute('download')) {
+                e.preventDefault();
+                startPageTransitionAndGo(t.href);
+            }
+        });
+    })();
+
+    // Phát lần lượt nhiều video ngắn, chỉ bắt đầu khi nhấn Go
+    var videoUrls = [
+        'videos/hello/1b41b2e688e71306c611ab3018b39915.mp4',
+        'videos/hello/47588d353bc94affb6a4e020a7a54118.mov',
+        'videos/hello/59186d54fbb64c63a25c6522e4ac10d1.mov',
+        'videos/hello/6a23c4b033bb401e847fdfac545f2852.mov',
+        'videos/hello/IMG_2306.MOV',
+        'videos/hello/IMG_4180.MOV',
+        'videos/hello/IMG_5025.MOV',
+        'videos/hello/IMG_7804.MOV',
+        'videos/hello/IMG_9293.MOV',
+        'videos/hello/copy_26C5F39C-1BAF-447C-8FCB-77B40BECAEB7.mov',
+        'videos/hello/v14044g50000d20toanog65ictm113t0.mp4'
+    ];
+    var currentVideo = 0;
+    var video = document.getElementById('main-video');
+    var goBtn = document.getElementById('go-btn');
+    var videoGlow = document.getElementById('video-glow');
+    var videoControls = document.getElementById('video-controls');
+
+    function playCurrentVideo() {
+        video.src = videoUrls[currentVideo];
+        video.currentTime = 0;
+        video.play();
+    }
+
+    goBtn.addEventListener('click', function() {
+        goBtn.style.display = 'none';
+        videoGlow.style.display = '';
+        videoControls.style.display = '';
+        playCurrentVideo();
+    });
+
+    document.getElementById('skip-btn').onclick = function() {
+        startPageTransitionAndGo('gallery.html');
+    };
+    document.getElementById('replay-btn').onclick = function() {
+        video.currentTime = 0;
+        video.play();
+    };
+
+    video.addEventListener('ended', function() {
+        currentVideo++;
+        if (currentVideo < videoUrls.length) {
+            playCurrentVideo();
+        } else {
+            startPageTransitionAndGo('gallery.html');
+        }
+    });
+    </script>
+</body>
+</html>
