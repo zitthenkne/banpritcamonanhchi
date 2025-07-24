@@ -231,16 +231,45 @@
     const owners = ['Bạn A', 'Bạn B', 'Bạn A', 'Bạn B', 'Bạn A', 'Bạn B'];
 
     function showVideo(i) {
-        video.classList.remove('in');
+        const holder = document.getElementById('video-holder');
+        const oldVideo = document.getElementById('emotion-video');
+        const oldIframe = document.getElementById('emotion-yt');
+        if (oldVideo) oldVideo.classList.remove('in');
+        if (oldIframe) oldIframe.classList.remove('in');
         title.classList.remove('in');
         setTimeout(() => {
             idx = (i + videos.length) % videos.length;
-            video.src = videos[idx];
-            video.currentTime = 0;
-            video.load();
-            video.classList.add('in');
-            title.classList.add('in');
-            video.play();
+            const url = videos[idx];
+            // Nếu là YouTube
+            if (url.includes('youtube.com') || url.includes('youtu.be')) {
+                if (oldVideo) oldVideo.style.display = 'none';
+                if (oldIframe) holder.removeChild(oldIframe);
+                let ytId = url.includes('youtu.be') ? url.split('/').pop() : url.split('v=')[1];
+                ytId = ytId.split('&')[0];
+                let iframe = document.getElementById('emotion-yt');
+                if (!iframe) {
+                    iframe = document.createElement('iframe');
+                    iframe.id = 'emotion-yt';
+                    iframe.width = oldVideo ? oldVideo.width || '100%' : '100%';
+                    iframe.height = oldVideo ? oldVideo.height || '360' : '360';
+                    iframe.frameBorder = '0';
+                    iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+                    iframe.allowFullscreen = true;
+                    iframe.className = 'video-fade';
+                }
+                iframe.src = `https://www.youtube.com/embed/${ytId}?autoplay=1&rel=0`;
+                holder.appendChild(iframe);
+                setTimeout(() => { iframe.classList.add('in'); title.classList.add('in'); }, 50);
+            } else {
+                if (oldIframe) holder.removeChild(oldIframe);
+                if (oldVideo) {
+                    oldVideo.style.display = '';
+                    oldVideo.src = url;
+                    oldVideo.currentTime = 0;
+                    oldVideo.load();
+                    setTimeout(() => { oldVideo.classList.add('in'); title.classList.add('in'); oldVideo.play(); }, 50);
+                }
+            }
             // Cập nhật tên chủ nhân
             if (ownerSpan) ownerSpan.textContent = owners[idx] || '';
         }, 600);
