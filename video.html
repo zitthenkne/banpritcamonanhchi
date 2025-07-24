@@ -54,10 +54,14 @@
             max-width: 700px;
         }
         video {
-            width: 800px;
-            height: 450px;
-            object-fit: cover;
+            width: 100%;
+            height: 100%;
+            max-width: 800px;
+            max-height: 450px;
+            object-fit: contain;
             background: #23272f;
+            display: block;
+            margin: 0 auto;
             border-radius: 1.5rem;
             border: 2.5px solid #b8006b;
             box-shadow:
@@ -168,10 +172,17 @@
 
     // Phát lần lượt nhiều video ngắn, chỉ bắt đầu khi nhấn Go
     var videoUrls = [
-        'https://www.w3schools.com/html/mov_bbb.mp4', // 5s đầu
-        'https://www.w3schools.com/html/movie.mp4',   // 3s tiếp
-        'https://samplelib.com/mp4/sample-5s.mp4',    // 5s
-        'https://samplelib.com/mp4/sample-3s.mp4'     // 3s
+        'videos/hello/1b41b2e688e71306c611ab3018b39915.mp4',
+        'videos/hello/47588d353bc94affb6a4e020a7a54118.mov',
+        'videos/hello/59186d54fbb64c63a25c6522e4ac10d1.mov',
+        'videos/hello/6a23c4b033bb401e847fdfac545f2852.mov',
+        'videos/hello/IMG_2306.MOV',
+        'videos/hello/IMG_4180.MOV',
+        'videos/hello/IMG_5025.MOV',
+        'videos/hello/IMG_7804.MOV',
+        'videos/hello/IMG_9293.MOV',
+        'videos/hello/copy_26C5F39C-1BAF-447C-8FCB-77B40BECAEB7.mov',
+        'videos/hello/v14044g50000d20toanog65ictm113t0.mp4'
     ];
     var currentVideo = 0;
     var video = document.getElementById('main-video');
