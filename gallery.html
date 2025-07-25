@@ -64,35 +64,14 @@
             outline: 4px solid #fff2;
         }
         .gallery-image.fade-out {
-            opacity: 0;
-            transform: scale(0.97) translateX(-60px);
-            box-shadow: 0 2px 8px #f9c6e0;
-            transition: opacity 0.5s, transform 0.5s, box-shadow 0.3s;
-        }
-        .gallery-image.fade-in {
-            opacity: 1;
-            transform: scale(1.04) translateX(60px);
-            box-shadow: 0 12px 40px #ffb6d5;
-            animation: gallerySlideIn 0.6s cubic-bezier(.4,2,.6,1) both;
-        }
-        .gallery-image.slide-from-right {
-            animation: gallerySlideInRight 0.6s cubic-bezier(.4,2,.6,1) both;
-        }
-        .gallery-image.slide-from-left {
-            animation: gallerySlideInLeft 0.6s cubic-bezier(.4,2,.6,1) both;
-        }
-        @keyframes gallerySlideInRight {
-            0% { opacity: 0; transform: scale(0.97) translateX(80px); filter: blur(2px); }
-            100% { opacity: 1; transform: scale(1.04) translateX(0); filter: blur(0); }
-        }
-        @keyframes gallerySlideInLeft {
-            0% { opacity: 0; transform: scale(0.97) translateX(-80px); filter: blur(2px); }
-            100% { opacity: 1; transform: scale(1.04) translateX(0); filter: blur(0); }
-        }
-        @keyframes gallerySlideIn {
-            0% { opacity: 0; transform: scale(0.97) translateX(0); filter: blur(2px); }
-            100% { opacity: 1; transform: scale(1.04) translateX(0); filter: blur(0); }
-        }
+    opacity: 0;
+    transition: opacity 0.7s;
+}
+.gallery-image.fade-in {
+    opacity: 1;
+    transition: opacity 0.7s;
+}
+/* Xóa hiệu ứng slide và animation cũ */
         .gallery-controls {
             display: flex;
             align-items: center;
@@ -314,10 +293,10 @@
             if (galleryItems[idx].type === 'video' && videoEl) {
                 videoEl.pause();
             }
-            img.classList.remove('fade-in', 'slide-from-right', 'slide-from-left');
+            img.classList.remove('fade-in');
             img.classList.add('fade-out');
             if (videoEl) {
-                videoEl.classList.remove('fade-in', 'slide-from-right', 'slide-from-left');
+                videoEl.classList.remove('fade-in');
                 videoEl.classList.add('fade-out');
             }
             clearAutoTimer();
@@ -325,10 +304,10 @@
                 idx = newIdx;
                 updateGallery(direction);
                 img.classList.remove('fade-out');
-                img.classList.add('fade-in', direction === 'right' ? 'slide-from-right' : 'slide-from-left');
+                img.classList.add('fade-in');
                 if (videoEl) {
                     videoEl.classList.remove('fade-out');
-                    videoEl.classList.add('fade-in', direction === 'right' ? 'slide-from-right' : 'slide-from-left');
+                    videoEl.classList.add('fade-in');
                 }
             }, 220);
         }
@@ -340,13 +319,13 @@
             if (item.type === 'image') {
                 img.style.display = '';
                 img.src = item.src;
-                img.classList.remove('slide-from-right', 'slide-from-left', 'fade-in', 'fade-out');
+                img.classList.remove('fade-in', 'fade-out');
                 void img.offsetWidth; // force reflow for animation
-                if (direction) img.classList.add('fade-in', direction === 'right' ? 'slide-from-right' : 'slide-from-left');
+                img.classList.add('fade-in');
                 if (videoEl) videoEl.style.display = 'none';
                 // Tự động chuyển ảnh nếu bật autoSwitch
                 if (autoSwitch) {
-                    autoTimer = setTimeout(() => showItem(idx + 1, true), 1500);
+                    autoTimer = setTimeout(() => showItem(idx + 1, true), 2000);
                 }
             } else if (item.type === 'video') {
                 img.style.display = 'none';
@@ -359,9 +338,9 @@
                 }
                 videoEl.src = item.src;
                 videoEl.style.display = '';
-                videoEl.classList.remove('slide-from-right', 'slide-from-left', 'fade-in', 'fade-out');
+                videoEl.classList.remove('fade-in', 'fade-out');
                 void videoEl.offsetWidth;
-                if (direction) videoEl.classList.add('fade-in', direction === 'right' ? 'slide-from-right' : 'slide-from-left');
+                videoEl.classList.add('fade-in');
                 videoEl.currentTime = 0;
                 videoEl.play();
                 // Khi video kết thúc thì chuyển sang media tiếp theo
