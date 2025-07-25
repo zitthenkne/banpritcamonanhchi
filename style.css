@@ -145,16 +145,61 @@ h1 {
     z-index: 10;
     overflow: hidden;
 }
-.video-container video {
-    max-width: 100vw;
-    max-height: 100vh;
-    width: 100vw;
-    height: 100vh;
+#video-holder, .video-container {
+    height: 70vh !important;
+    min-height: 350px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.video-container video,
+.video-container iframe#emotion-yt {
+    width: 700px;
+    height: 394px;
+    max-width: 98vw;
+    max-height: 70vh;
     object-fit: contain;
     background: #ffe0ef;
     display: block;
     margin: 0 auto;
-    border-radius: 0.5em;
+    border-radius: 1.5rem;
     border: 2.5px solid #ffb6d5;
     box-shadow: 0 2px 24px #ffd6e6, 0 1.5px 8px #f9c6e0;
+}
+
+#video-holder {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.video-container iframe#emotion-yt {
+    width: 700px;
+    height: 394px;
+    max-width: 98vw;
+    max-height: 70vh;
+    object-fit: contain;
+    background: #ffe0ef;
+    display: block;
+    margin: 0 auto;
+    border-radius: 1.5rem;
+    border: 2.5px solid #ffb6d5;
+    box-shadow: 0 2px 24px #ffd6e6, 0 1.5px 8px #f9c6e0;
+}
+@media (max-width: 900px) {
+    #video-holder {
+        width: 99vw;
+        height: auto;
+        min-height: unset;
+        max-width: 99vw;
+        max-height: unset;
+    }
+    .video-container iframe#emotion-yt {
+        width: 98vw;
+        height: 38vh;
+        max-width: 98vw;
+        max-height: 38vh;
+        border-radius: 1.2rem;
+    }
 }

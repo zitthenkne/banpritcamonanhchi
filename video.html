@@ -134,7 +134,8 @@
     <div class="video-fullscreen">
         <button id="go-btn" class="video-btn" style="position:absolute;z-index:10;left:50%;top:50%;transform:translate(-50%,-50%);font-size:2rem;padding:1em 2.5em;">Go</button>
         <div class="video-glow" id="video-glow" style="display:none;">
-            <video id="main-video" controls></video>
+            <!-- Nhúng video YouTube duy nhất -->
+            <iframe id="main-yt" width="700" height="394" style="border-radius:1.5rem;box-shadow:0 0 64px 12px #fff2,0 0 128px 32px #b8006b33,0 8px 40px 0 #10131a;" src="https://www.youtube.com/embed/9td36OOepOg?si=Vir50c52skAXZX-S&autoplay=1&rel=0&showinfo=0&modestbranding=1" title="YouTube video" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
         </div>
         <div class="video-controls" id="video-controls" style="display:none;">
             <button class="video-btn" id="skip-btn">Tiếp theo</button>
@@ -171,18 +172,9 @@
     })();
 
     // Phát lần lượt nhiều video ngắn, chỉ bắt đầu khi nhấn Go
+    // Chỉ còn 1 video YouTube duy nhất
     var videoUrls = [
-        'videos/hello/1b41b2e688e71306c611ab3018b39915.mp4',
-        'videos/hello/47588d353bc94affb6a4e020a7a54118.mov',
-        'videos/hello/59186d54fbb64c63a25c6522e4ac10d1.mov',
-        'videos/hello/6a23c4b033bb401e847fdfac545f2852.mov',
-        'videos/hello/IMG_2306.MOV',
-        'videos/hello/IMG_4180.MOV',
-        'videos/hello/IMG_5025.MOV',
-        'videos/hello/IMG_7804.MOV',
-        'videos/hello/IMG_9293.MOV',
-        'videos/hello/copy_26C5F39C-1BAF-447C-8FCB-77B40BECAEB7.mov',
-        'videos/hello/v14044g50000d20toanog65ictm113t0.mp4'
+        'https://www.youtube.com/embed/9td36OOepOg?si=Vir50c52skAXZX-S&autoplay=1&rel=0&showinfo=0&modestbranding=1'
     ];
     var currentVideo = 0;
     var video = document.getElementById('main-video');
